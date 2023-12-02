@@ -23,8 +23,8 @@ macro_rules! main {
             let time_p1 = || {
                 let (result, time) = crate::utils::time_it(|| part1(&contents));
                 let output = format!(
-                    "+----+--------+----------------+------------+
-|{:^4}|{:^8}|{:^16}|{:^12}|",
+                    "|{:^4}|{:^8}|{:^16}|{:^12}|
++----+--------+----------------+------------+",
                     $day, 1, result, time
                 );
                 println!("{}", output);
@@ -32,8 +32,8 @@ macro_rules! main {
             let time_p2 = || {
                 let (result, time) = crate::utils::time_it(|| part2(&contents));
                 let output = format!(
-                    "+----+--------+----------------+------------+
-|{:^4}|{:^8}|{:^16}|{:^12}|",
+                    "|{:^4}|{:^8}|{:^16}|{:^12}|
++----+--------+----------------+------------+",
                     $day, 2, result, time
                 );
                 println!("{}", output);
