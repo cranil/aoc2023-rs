@@ -22,11 +22,21 @@ macro_rules! main {
             let contents = get_contents(input_file.as_str());
             let time_p1 = || {
                 let (result, time) = crate::utils::time_it(|| part1(&contents));
-                println!("Day {}, Part 1 result: {}, time: {}us", $day, result, time);
+                let output = format!(
+                    "+----+--------+----------------+------------+
+|{:^4}|{:^8}|{:^16}|{:^12}|",
+                    $day, 1, result, time
+                );
+                println!("{}", output);
             };
             let time_p2 = || {
                 let (result, time) = crate::utils::time_it(|| part2(&contents));
-                println!("Day {}, Part 2 result: {}, time: {}us", $day, result, time);
+                let output = format!(
+                    "+----+--------+----------------+------------+
+|{:^4}|{:^8}|{:^16}|{:^12}|",
+                    $day, 2, result, time
+                );
+                println!("{}", output);
             };
             match part {
                 1 => time_p1(),
