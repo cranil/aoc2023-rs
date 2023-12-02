@@ -1,4 +1,5 @@
 pub mod day1;
+pub mod day2;
 pub mod utils;
 use clap::Parser;
 
@@ -19,8 +20,10 @@ fn main() {
     let args = Args::parse();
     match args.day {
         1 => day1::main(&args.test, &args.part),
+        2 => day2::main(&args.test, &args.part),
         _ => {
             day1::main(&args.test, &args.part);
+            day2::main(&args.test, &args.part);
         }
     }
 }
