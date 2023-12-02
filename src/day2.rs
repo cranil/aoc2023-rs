@@ -1,7 +1,10 @@
 use crate::utils::main;
 
-fn part1(input_file: &str) {
-    let lines = crate::utils::read_lines(input_file);
+fn get_contents(filename: &str) -> Vec<String> {
+    return crate::utils::read_lines(filename);
+}
+
+fn part1(lines: &Vec<String>) -> i32 {
     let mut sum = 0;
     for line in lines {
         let mut toks = line.split([':']);
@@ -10,7 +13,7 @@ fn part1(input_file: &str) {
         let mut valid = true;
         let draws = toks.next().unwrap().trim();
         for draw in draws.split(';') {
-            for cube in draw.split(',') {
+            for cube in draw.split(", ") {
                 let mut toks = cube.trim().split(' ');
                 let num = i32::from_str_radix(toks.next().unwrap().trim(), 10).unwrap();
                 let color = toks.next().unwrap().trim();
@@ -38,11 +41,10 @@ fn part1(input_file: &str) {
             sum += id;
         }
     }
-    println!("Day 2, Part 1 result: {}", sum);
+    return sum;
 }
 
-fn part2(input_file: &str) {
-    let lines = crate::utils::read_lines(input_file);
+fn part2(lines: &Vec<String>) -> i32 {
     let mut sum = 0;
     for line in lines {
         let mut toks = line.split([':']);
@@ -78,7 +80,7 @@ fn part2(input_file: &str) {
         }
         sum += red * green * blue;
     }
-    println!("Day 2, Part 1 result: {}", sum);
+    return sum;
 }
 
 main!(2);

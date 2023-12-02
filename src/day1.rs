@@ -1,8 +1,11 @@
 use crate::utils::main;
 
-fn part1(input_file: &str) {
+fn get_contents(filename: &str) -> Vec<String> {
+    return crate::utils::read_lines(filename);
+}
+
+fn part1(lines: &Vec<String>) -> i32 {
     let mut sum = 0;
-    let lines = crate::utils::read_lines(input_file);
     for line in lines {
         let mut first = -1;
         let mut last = -1;
@@ -25,12 +28,11 @@ fn part1(input_file: &str) {
         }
     }
 
-    println!("Day 1, part 1 result: {}", sum);
+    return sum;
 }
 
-fn part2(input_file: &str) {
+fn part2(lines: &Vec<String>) -> i32 {
     let mut sum = 0;
-    let lines = crate::utils::read_lines(input_file);
     for line in lines {
         let mut first = -1;
         let mut last = -1;
@@ -136,8 +138,7 @@ fn part2(input_file: &str) {
             sum += first * 11;
         }
     }
-
-    println!("Day 1, part 2 result: {}", sum);
+    return sum;
 }
 
 main!(1);
