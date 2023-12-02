@@ -46,8 +46,7 @@ fn part2(input_file: &str) {
     let mut sum = 0;
     for line in lines {
         let mut toks = line.split([':']);
-        let game_str = toks.next().unwrap().trim();
-        let id = i32::from_str_radix(&game_str[5..], 10).unwrap();
+        let _game_str = toks.next().unwrap().trim();
         let draws = toks.next().unwrap().trim();
         let mut blue = 0;
         let mut green = 0;
