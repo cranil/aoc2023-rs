@@ -50,14 +50,18 @@ macro_rules! main {
     };
 }
 
-pub fn time_it<T, F: Fn() -> T>(f: F) -> (T, u128) {
+pub fn time_it<T, F: Fn() -> T>(f: F) -> (T, f64) {
     let start = std::time::Instant::now();
-    for _ in 0..1000 {
+    let n_runs = 1000;
+    for _ in 0..n_runs {
         let _ = f();
     }
     let end = std::time::Instant::now();
     let result = f();
-    return (result, end.duration_since(start).as_micros() / 1000);
+    return (
+        result,
+        end.duration_since(start).as_micros() as f64 / n_runs as f64,
+    );
 }
 
 pub(crate) use main;

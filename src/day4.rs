@@ -1,15 +1,74 @@
 use crate::utils::main;
 
-fn get_contents(filename: &str) -> &str {
-    return filename;
+fn get_contents(filename: &str) -> Vec<(Vec<i32>, Vec<i32>)> {
+    let lines = crate::utils::read_lines(filename);
+    return lines
+        .iter()
+        .map(|line| {
+            let mut toks = line.split(':');
+            let _ = toks.next().unwrap().trim();
+            let card_str = toks.next().unwrap().trim();
+            let mut toks = card_str.split('|');
+            let winning_cards_str = toks.next().unwrap().trim().split(' ');
+            let mut winning_cards = Vec::new();
+
+            for card_num in winning_cards_str {
+                match i32::from_str_radix(card_num, 10) {
+                    Ok(num) => winning_cards.push(num),
+                    Err(_) => {}
+                }
+            }
+
+            let dealt_cards_str = toks.next().unwrap().trim().split(' ');
+            let mut dealt_cards = Vec::new();
+
+            for card_num in dealt_cards_str {
+                match i32::from_str_radix(card_num, 10) {
+                    Ok(num) => dealt_cards.push(num),
+                    Err(_) => {}
+                }
+            }
+
+            return (winning_cards, dealt_cards);
+        })
+        .collect();
 }
 
-fn part1(_input_file: &str) -> i32 {
-    panic!("Day 3 Part 1 Not implemented");
+fn part1(input: &Vec<(Vec<i32>, Vec<i32>)>) -> i32 {
+    let mut sum = 0;
+    for (winning_cards, dealt_cards) in input {
+        let mut count = 0;
+        for card in dealt_cards {
+            if winning_cards.contains(card) {
+                count += 1;
+            }
+        }
+        if count > 0 {
+            sum += 1 << (count - 1);
+        }
+    }
+    return sum;
 }
 
-fn part2(_input_file: &str) -> i32 {
-    panic!("Day 3 Part 1 Not implemented");
+fn part2(input: &Vec<(Vec<i32>, Vec<i32>)>) -> i32 {
+    let mut copies = vec![1; input.len()];
+    let mut sum = 0;
+    for (i, (winning_cards, dealt_cards)) in input.iter().enumerate() {
+        let c = copies[i];
+        sum += c;
+        let mut count = 0;
+        for card in dealt_cards {
+            if winning_cards.contains(card) {
+                count += 1;
+            }
+        }
+        if count > 0 {
+            for j in i + 1..i + 1 + count {
+                copies[j] += c;
+            }
+        }
+    }
+    return sum;
 }
 
 main!(4);
