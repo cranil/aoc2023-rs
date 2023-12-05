@@ -40,6 +40,9 @@ struct Args {
 
     #[arg(short, long, default_value_t = 0)]
     part: u32,
+
+    #[arg(short, long, default_value_t = 1)]
+    num_runs: usize,
 }
 
 fn main() {
@@ -53,57 +56,57 @@ fn main() {
     );
     println!("{}", header);
     match args.day {
-        1 => day1::main(&args.test, &args.part),
-        2 => day2::main(&args.test, &args.part),
-        3 => day3::main(&args.test, &args.part),
-        4 => day4::main(&args.test, &args.part),
-        5 => day5::main(&args.test, &args.part),
-        6 => day6::main(&args.test, &args.part),
-        7 => day7::main(&args.test, &args.part),
-        8 => day8::main(&args.test, &args.part),
-        9 => day9::main(&args.test, &args.part),
-        10 => day10::main(&args.test, &args.part),
-        11 => day11::main(&args.test, &args.part),
-        12 => day12::main(&args.test, &args.part),
-        13 => day13::main(&args.test, &args.part),
-        14 => day14::main(&args.test, &args.part),
-        15 => day15::main(&args.test, &args.part),
-        16 => day16::main(&args.test, &args.part),
-        17 => day17::main(&args.test, &args.part),
-        18 => day18::main(&args.test, &args.part),
-        19 => day19::main(&args.test, &args.part),
-        20 => day20::main(&args.test, &args.part),
-        21 => day21::main(&args.test, &args.part),
-        22 => day22::main(&args.test, &args.part),
-        23 => day23::main(&args.test, &args.part),
-        24 => day24::main(&args.test, &args.part),
-        25 => day25::main(&args.test, &args.part),
+        1 => day1::main(&args.test, &args.part, &args.num_runs),
+        2 => day2::main(&args.test, &args.part, &args.num_runs),
+        3 => day3::main(&args.test, &args.part, &args.num_runs),
+        4 => day4::main(&args.test, &args.part, &args.num_runs),
+        5 => day5::main(&args.test, &args.part, &args.num_runs),
+        6 => day6::main(&args.test, &args.part, &args.num_runs),
+        7 => day7::main(&args.test, &args.part, &args.num_runs),
+        8 => day8::main(&args.test, &args.part, &args.num_runs),
+        9 => day9::main(&args.test, &args.part, &args.num_runs),
+        10 => day10::main(&args.test, &args.part, &args.num_runs),
+        11 => day11::main(&args.test, &args.part, &args.num_runs),
+        12 => day12::main(&args.test, &args.part, &args.num_runs),
+        13 => day13::main(&args.test, &args.part, &args.num_runs),
+        14 => day14::main(&args.test, &args.part, &args.num_runs),
+        15 => day15::main(&args.test, &args.part, &args.num_runs),
+        16 => day16::main(&args.test, &args.part, &args.num_runs),
+        17 => day17::main(&args.test, &args.part, &args.num_runs),
+        18 => day18::main(&args.test, &args.part, &args.num_runs),
+        19 => day19::main(&args.test, &args.part, &args.num_runs),
+        20 => day20::main(&args.test, &args.part, &args.num_runs),
+        21 => day21::main(&args.test, &args.part, &args.num_runs),
+        22 => day22::main(&args.test, &args.part, &args.num_runs),
+        23 => day23::main(&args.test, &args.part, &args.num_runs),
+        24 => day24::main(&args.test, &args.part, &args.num_runs),
+        25 => day25::main(&args.test, &args.part, &args.num_runs),
         _ => {
-            day1::main(&args.test, &args.part);
-            day2::main(&args.test, &args.part);
-            day3::main(&args.test, &args.part);
-            day4::main(&args.test, &args.part);
-            day5::main(&args.test, &args.part);
-            day6::main(&args.test, &args.part);
-            day7::main(&args.test, &args.part);
-            day8::main(&args.test, &args.part);
-            day9::main(&args.test, &args.part);
-            day10::main(&args.test, &args.part);
-            day11::main(&args.test, &args.part);
-            day12::main(&args.test, &args.part);
-            day13::main(&args.test, &args.part);
-            day14::main(&args.test, &args.part);
-            day15::main(&args.test, &args.part);
-            day16::main(&args.test, &args.part);
-            day17::main(&args.test, &args.part);
-            day18::main(&args.test, &args.part);
-            day19::main(&args.test, &args.part);
-            day20::main(&args.test, &args.part);
-            day21::main(&args.test, &args.part);
-            day22::main(&args.test, &args.part);
-            day23::main(&args.test, &args.part);
-            day24::main(&args.test, &args.part);
-            day25::main(&args.test, &args.part);
+            day1::main(&args.test, &args.part, &args.num_runs);
+            day2::main(&args.test, &args.part, &args.num_runs);
+            day3::main(&args.test, &args.part, &args.num_runs);
+            day4::main(&args.test, &args.part, &args.num_runs);
+            day5::main(&args.test, &args.part, &args.num_runs);
+            day6::main(&args.test, &args.part, &args.num_runs);
+            day7::main(&args.test, &args.part, &args.num_runs);
+            day8::main(&args.test, &args.part, &args.num_runs);
+            day9::main(&args.test, &args.part, &args.num_runs);
+            day10::main(&args.test, &args.part, &args.num_runs);
+            day11::main(&args.test, &args.part, &args.num_runs);
+            day12::main(&args.test, &args.part, &args.num_runs);
+            day13::main(&args.test, &args.part, &args.num_runs);
+            day14::main(&args.test, &args.part, &args.num_runs);
+            day15::main(&args.test, &args.part, &args.num_runs);
+            day16::main(&args.test, &args.part, &args.num_runs);
+            day17::main(&args.test, &args.part, &args.num_runs);
+            day18::main(&args.test, &args.part, &args.num_runs);
+            day19::main(&args.test, &args.part, &args.num_runs);
+            day20::main(&args.test, &args.part, &args.num_runs);
+            day21::main(&args.test, &args.part, &args.num_runs);
+            day22::main(&args.test, &args.part, &args.num_runs);
+            day23::main(&args.test, &args.part, &args.num_runs);
+            day24::main(&args.test, &args.part, &args.num_runs);
+            day25::main(&args.test, &args.part, &args.num_runs);
         }
     }
 }
