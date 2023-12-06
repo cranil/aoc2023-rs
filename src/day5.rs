@@ -22,10 +22,6 @@ fn get_contents(
         .split(' ')
         .map(|x| x.parse::<i64>().unwrap())
         .collect::<Vec<i64>>();
-
-    let mut seed_to_soil_map = Vec::new();
-    let mut i = 3;
-
     let parse_line = |line: &String| {
         let mut toks = line.split(" ");
         let dst = toks.next().unwrap().trim().parse::<i64>().unwrap();
@@ -34,6 +30,8 @@ fn get_contents(
         return (dst, src, len);
     };
 
+    let mut seed_to_soil_map = Vec::new();
+    let mut i = 3;
     while lines[i] != "" {
         seed_to_soil_map.push(parse_line(&lines[i]));
         i += 1;
@@ -41,7 +39,6 @@ fn get_contents(
 
     let mut soil_to_fertilizer_map = Vec::new();
     i += 2;
-
     while lines[i] != "" {
         soil_to_fertilizer_map.push(parse_line(&lines[i]));
         i += 1;
@@ -49,7 +46,6 @@ fn get_contents(
 
     let mut fertilizer_to_water_map = Vec::new();
     i += 2;
-
     while lines[i] != "" {
         fertilizer_to_water_map.push(parse_line(&lines[i]));
         i += 1;
@@ -64,7 +60,6 @@ fn get_contents(
 
     let mut light_to_temperature_map = Vec::new();
     i += 2;
-
     while lines[i] != "" {
         light_to_temperature_map.push(parse_line(&lines[i]));
         i += 1;
@@ -83,6 +78,7 @@ fn get_contents(
         humidity_to_location_map.push(parse_line(&lines[i]));
         i += 1;
     }
+
     return (
         seeds,
         seed_to_soil_map,
@@ -139,8 +135,10 @@ fn part1(
         .unwrap();
 }
 
-#[allow(dead_code)]
-#[allow(unreachable_code)]
+// fn apply_one(map: &(i64, i64, i64), src_range: (i64, i64)) -> Vec<(i64, i64)> {}
+
+// fn apply_range(map: &Vec<(i64, i64, i64)>, src_range: (i64, i64)) -> i64 {}
+
 fn part2(
     input: &(
         Vec<i64>,
