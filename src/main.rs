@@ -1,4 +1,12 @@
-pub mod day1;
+pub mod day01;
+pub mod day02;
+pub mod day03;
+pub mod day04;
+pub mod day05;
+pub mod day06;
+pub mod day07;
+pub mod day08;
+pub mod day09;
 pub mod day10;
 pub mod day11;
 pub mod day12;
@@ -9,20 +17,12 @@ pub mod day16;
 pub mod day17;
 pub mod day18;
 pub mod day19;
-pub mod day2;
 pub mod day20;
 pub mod day21;
 pub mod day22;
 pub mod day23;
 pub mod day24;
 pub mod day25;
-pub mod day3;
-pub mod day4;
-pub mod day5;
-pub mod day6;
-pub mod day7;
-pub mod day8;
-pub mod day9;
 
 pub mod algos;
 pub mod utils;
@@ -56,15 +56,15 @@ fn main() {
     );
     println!("{}", header);
     match args.day {
-        1 => day1::main(&args.test, &args.part, &args.num_runs),
-        2 => day2::main(&args.test, &args.part, &args.num_runs),
-        3 => day3::main(&args.test, &args.part, &args.num_runs),
-        4 => day4::main(&args.test, &args.part, &args.num_runs),
-        5 => day5::main(&args.test, &args.part, &args.num_runs),
-        6 => day6::main(&args.test, &args.part, &args.num_runs),
-        7 => day7::main(&args.test, &args.part, &args.num_runs),
-        8 => day8::main(&args.test, &args.part, &args.num_runs),
-        9 => day9::main(&args.test, &args.part, &args.num_runs),
+        1 => day01::main(&args.test, &args.part, &args.num_runs),
+        2 => day02::main(&args.test, &args.part, &args.num_runs),
+        3 => day03::main(&args.test, &args.part, &args.num_runs),
+        4 => day04::main(&args.test, &args.part, &args.num_runs),
+        5 => day05::main(&args.test, &args.part, &args.num_runs),
+        6 => day06::main(&args.test, &args.part, &args.num_runs),
+        7 => day07::main(&args.test, &args.part, &args.num_runs),
+        8 => day08::main(&args.test, &args.part, &args.num_runs),
+        9 => day09::main(&args.test, &args.part, &args.num_runs),
         10 => day10::main(&args.test, &args.part, &args.num_runs),
         11 => day11::main(&args.test, &args.part, &args.num_runs),
         12 => day12::main(&args.test, &args.part, &args.num_runs),
@@ -82,15 +82,15 @@ fn main() {
         24 => day24::main(&args.test, &args.part, &args.num_runs),
         25 => day25::main(&args.test, &args.part, &args.num_runs),
         _ => {
-            day1::main(&args.test, &args.part, &args.num_runs);
-            day2::main(&args.test, &args.part, &args.num_runs);
-            day3::main(&args.test, &args.part, &args.num_runs);
-            day4::main(&args.test, &args.part, &args.num_runs);
-            day5::main(&args.test, &args.part, &args.num_runs);
-            day6::main(&args.test, &args.part, &args.num_runs);
-            day7::main(&args.test, &args.part, &args.num_runs);
-            day8::main(&args.test, &args.part, &args.num_runs);
-            day9::main(&args.test, &args.part, &args.num_runs);
+            day01::main(&args.test, &args.part, &args.num_runs);
+            day02::main(&args.test, &args.part, &args.num_runs);
+            day03::main(&args.test, &args.part, &args.num_runs);
+            day04::main(&args.test, &args.part, &args.num_runs);
+            day05::main(&args.test, &args.part, &args.num_runs);
+            day06::main(&args.test, &args.part, &args.num_runs);
+            day07::main(&args.test, &args.part, &args.num_runs);
+            day08::main(&args.test, &args.part, &args.num_runs);
+            day09::main(&args.test, &args.part, &args.num_runs);
             day10::main(&args.test, &args.part, &args.num_runs);
             day11::main(&args.test, &args.part, &args.num_runs);
             day12::main(&args.test, &args.part, &args.num_runs);

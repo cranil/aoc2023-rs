@@ -135,10 +135,6 @@ fn part1(
         .unwrap();
 }
 
-// fn apply_one(map: &(i64, i64, i64), src_range: (i64, i64)) -> Vec<(i64, i64)> {}
-
-// fn apply_range(map: &Vec<(i64, i64, i64)>, src_range: (i64, i64)) -> i64 {}
-
 fn part2(
     input: &(
         Vec<i64>,
