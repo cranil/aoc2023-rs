@@ -16,11 +16,11 @@ fn get_contents(filename: &str) -> (Vec<i32>, Vec<i32>) {
     return (times, distances);
 }
 
-fn calculate_num_ways(total_time: i32, distance: i32) -> i32 {
+fn calculate_num_ways(total_time: i64, distance: i64) -> i64 {
     let discriminant = (total_time * total_time) - (distance * 4);
     let begin = (total_time as f64 - (discriminant as f64).sqrt()) / 2.0;
     let end = (total_time as f64 + (discriminant as f64).sqrt()) / 2.0;
-    let mut num_ways = (end.floor() - begin.ceil()) as i32;
+    let mut num_ways = (end.floor() - begin.ceil()) as i64;
     if num_ways * num_ways == discriminant {
         num_ways -= 1;
     } else {
@@ -29,17 +29,17 @@ fn calculate_num_ways(total_time: i32, distance: i32) -> i32 {
     return num_ways;
 }
 
-fn part1(input: &(Vec<i32>, Vec<i32>)) -> i32 {
+fn part1(input: &(Vec<i32>, Vec<i32>)) -> i64 {
     let mut out = 1;
     let (times, distances) = input;
     for (total_time, distance) in times.iter().zip(distances.iter()) {
-        let num_ways = calculate_num_ways(*total_time, *distance);
+        let num_ways = calculate_num_ways(*total_time as i64, *distance as i64);
         out *= num_ways;
     }
     return out;
 }
 
-fn part2(input: &(Vec<i32>, Vec<i32>)) -> i32 {
+fn part2(input: &(Vec<i32>, Vec<i32>)) -> i64 {
     let (times, distances) = input;
     let mut actual_time = String::from("");
     let mut actual_distance = String::from("");
@@ -49,8 +49,8 @@ fn part2(input: &(Vec<i32>, Vec<i32>)) -> i32 {
         actual_distance.push_str(&format!("{}", distance));
     }
 
-    let total_time = actual_time.parse::<i32>().unwrap();
-    let distance = actual_distance.parse::<i32>().unwrap();
+    let total_time = actual_time.parse::<i64>().unwrap();
+    let distance = actual_distance.parse::<i64>().unwrap();
     return calculate_num_ways(total_time, distance);
 }
 
