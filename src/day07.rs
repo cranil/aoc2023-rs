@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::utils::main;
+use crate::utils::{main, test};
 
 fn get_contents(filename: &str) -> Vec<(Hand, i32)> {
     let lines = crate::utils::read_lines(filename);
@@ -260,5 +260,11 @@ fn part2(hand_bid_pairs: &Vec<(Hand, i32)>) -> i32 {
         .map(|(i, x)| (i + 1) as i32 * x.1)
         .sum();
 }
+#[cfg(test)]
+mod consts {
+    pub const PART1_INPUTS: [(&str, i32); 1] = [("test_inputs/day07/test01.txt", 6440)];
+    pub const PART2_INPUTS: [(&str, i32); 1] = [("test_inputs/day07/test01.txt", 5905)];
+}
 
-main!(7);
+test!();
+main!();

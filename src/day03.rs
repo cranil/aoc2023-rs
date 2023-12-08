@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use crate::algos::Grid;
-use crate::utils::main;
+use crate::utils::{main, test};
 
 fn get_contents(filename: &str) -> Grid<char> {
     let lines = crate::utils::read_lines(filename);
@@ -164,4 +164,11 @@ fn part2(grid: &Grid<char>) -> i32 {
     return sum;
 }
 
-main!(3);
+#[cfg(test)]
+mod consts {
+    pub const PART1_INPUTS: [(&str, i32); 1] = [("test_inputs/day03/test01.txt", 4361)];
+    pub const PART2_INPUTS: [(&str, i32); 1] = [("test_inputs/day03/test01.txt", 467835)];
+}
+
+test!();
+main!();

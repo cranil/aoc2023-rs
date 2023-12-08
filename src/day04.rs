@@ -1,4 +1,4 @@
-use crate::utils::main;
+use crate::utils::{main, test};
 
 fn get_contents(filename: &str) -> Vec<(Vec<i32>, Vec<i32>)> {
     let lines = crate::utils::read_lines(filename);
@@ -71,4 +71,11 @@ fn part2(input: &Vec<(Vec<i32>, Vec<i32>)>) -> i32 {
     return sum;
 }
 
-main!(4);
+#[cfg(test)]
+mod consts {
+    pub const PART1_INPUTS: [(&str, i32); 1] = [("test_inputs/day04/test01.txt", 13)];
+    pub const PART2_INPUTS: [(&str, i32); 1] = [("test_inputs/day04/test01.txt", 30)];
+}
+
+test!();
+main!();

@@ -1,4 +1,4 @@
-use crate::utils::main;
+use crate::utils::{main, test};
 
 fn get_contents(filename: &str) -> (Vec<i32>, Vec<i32>) {
     let lines = crate::utils::read_lines(filename);
@@ -53,5 +53,11 @@ fn part2(input: &(Vec<i32>, Vec<i32>)) -> i64 {
     let distance = actual_distance.parse::<i64>().unwrap();
     return calculate_num_ways(total_time, distance);
 }
+#[cfg(test)]
+mod consts {
+    pub const PART1_INPUTS: [(&str, i64); 1] = [("test_inputs/day06/test01.txt", 288)];
+    pub const PART2_INPUTS: [(&str, i64); 1] = [("test_inputs/day06/test01.txt", 71503)];
+}
 
-main!(6);
+test!();
+main!();

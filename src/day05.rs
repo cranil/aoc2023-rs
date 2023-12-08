@@ -1,4 +1,4 @@
-use crate::utils::main;
+use crate::utils::{main, test};
 
 fn get_contents(
     filename: &str,
@@ -173,4 +173,11 @@ fn part2(
         .unwrap();
 }
 
-main!(5);
+#[cfg(test)]
+mod consts {
+    pub const PART1_INPUTS: [(&str, i64); 1] = [("test_inputs/day05/test01.txt", 35)];
+    pub const PART2_INPUTS: [(&str, i64); 1] = [("test_inputs/day05/test01.txt", 46)];
+}
+
+test!();
+main!();
