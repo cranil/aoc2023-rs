@@ -1,7 +1,4 @@
-use crate::{
-    algos::Grid,
-    utils::{main, test},
-};
+use crate::utils::{main, test};
 
 fn get_contents(filename: &str) -> Vec<Vec<i64>> {
     let lines = crate::utils::read_lines(filename);
@@ -16,32 +13,20 @@ fn get_contents(filename: &str) -> Vec<Vec<i64>> {
 }
 
 fn newton_extrapolation(y: &Vec<i64>) -> i64 {
-    let mut g = Grid::new(y.len(), y.len());
-    for i in 0..y.len() {
-        g.set(0, i, y[i]);
+    let mut dp = Vec::with_capacity(y.len());
+    for yi in y.iter() {
+        dp.push(*yi);
     }
-    for i in 1..y.len() {
-        let mut pval = g.at(i - 1, 1).unwrap() - g.at(i - 1, 0).unwrap();
-        let mut eq = true;
-        g.set(i, 0, pval);
 
-        for j in 1..y.len() - i {
-            let val = g.at(i - 1, j + 1).unwrap() - g.at(i - 1, j).unwrap();
-            g.set(i, j, val);
-            if val != pval {
-                eq = false;
-            }
-            pval = val;
-        }
-        if eq {
-            break;
+    for i in (0..y.len() - 1).rev() {
+        let mut tmp1 = dp[i + 1];
+        for j in (0..i + 1).rev() {
+            let tmp0 = dp[j];
+            dp[j] = tmp1 - tmp0;
+            tmp1 = tmp0;
         }
     }
-    let mut sum = 0;
-    for i in 0..y.len() {
-        sum += g.at(y.len() - i - 1, i).unwrap();
-    }
-    return sum;
+    return dp.iter().sum();
 }
 
 fn part1(input: &Vec<Vec<i64>>) -> i64 {
