@@ -13,11 +13,7 @@ fn get_contents(filename: &str) -> Vec<Vec<i64>> {
 }
 
 fn newton_extrapolation(y: &Vec<i64>) -> i64 {
-    let mut dp = Vec::with_capacity(y.len());
-    for yi in y.iter() {
-        dp.push(*yi);
-    }
-
+    let mut dp = y.clone();
     for i in (0..y.len() - 1).rev() {
         let mut tmp1 = dp[i + 1];
         for j in (0..i + 1).rev() {
