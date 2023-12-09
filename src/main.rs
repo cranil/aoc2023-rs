@@ -40,6 +40,22 @@ struct Args {
 
     #[arg(short, long, default_value_t = 1)]
     num_runs: usize,
+
+    #[arg(short, long)]
+    input_file: Option<String>,
+}
+
+macro_rules! input_file {
+    ($day:expr, $file:expr) => {
+        match $file {
+            Some(f) => f.clone(),
+            None => format!("input/day{:02}/input.txt", $day),
+        }
+        .as_str()
+    };
+    ($day:expr) => {
+        format!("input/day{:02}/input.txt", $day).as_str()
+    };
 }
 
 fn main() {
@@ -53,57 +69,157 @@ fn main() {
     );
     println!("{}", header);
     match args.day {
-        01 => day01::main(&args.part, &args.num_runs),
-        02 => day02::main(&args.part, &args.num_runs),
-        03 => day03::main(&args.part, &args.num_runs),
-        04 => day04::main(&args.part, &args.num_runs),
-        05 => day05::main(&args.part, &args.num_runs),
-        06 => day06::main(&args.part, &args.num_runs),
-        07 => day07::main(&args.part, &args.num_runs),
-        08 => day08::main(&args.part, &args.num_runs),
-        09 => day09::main(&args.part, &args.num_runs),
-        10 => day10::main(&args.part, &args.num_runs),
-        11 => day11::main(&args.part, &args.num_runs),
-        12 => day12::main(&args.part, &args.num_runs),
-        13 => day13::main(&args.part, &args.num_runs),
-        14 => day14::main(&args.part, &args.num_runs),
-        15 => day15::main(&args.part, &args.num_runs),
-        16 => day16::main(&args.part, &args.num_runs),
-        17 => day17::main(&args.part, &args.num_runs),
-        18 => day18::main(&args.part, &args.num_runs),
-        19 => day19::main(&args.part, &args.num_runs),
-        20 => day20::main(&args.part, &args.num_runs),
-        21 => day21::main(&args.part, &args.num_runs),
-        22 => day22::main(&args.part, &args.num_runs),
-        23 => day23::main(&args.part, &args.num_runs),
-        24 => day24::main(&args.part, &args.num_runs),
-        25 => day25::main(&args.part, &args.num_runs),
+        01 => day01::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        02 => day02::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        03 => day03::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        04 => day04::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        05 => day05::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        06 => day06::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        07 => day07::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        08 => day08::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        09 => day09::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        10 => day10::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        11 => day11::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        12 => day12::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        13 => day13::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        14 => day14::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        15 => day15::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        16 => day16::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        17 => day17::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        18 => day18::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        19 => day19::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        20 => day20::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        21 => day21::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        22 => day22::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        23 => day23::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        24 => day24::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
+        25 => day25::main(
+            &args.part,
+            &args.num_runs,
+            input_file!(args.day, args.input_file),
+        ),
         _ => {
-            day01::main(&args.part, &args.num_runs);
-            day02::main(&args.part, &args.num_runs);
-            day03::main(&args.part, &args.num_runs);
-            day04::main(&args.part, &args.num_runs);
-            day05::main(&args.part, &args.num_runs);
-            day06::main(&args.part, &args.num_runs);
-            day07::main(&args.part, &args.num_runs);
-            day08::main(&args.part, &args.num_runs);
-            day09::main(&args.part, &args.num_runs);
-            day10::main(&args.part, &args.num_runs);
-            day11::main(&args.part, &args.num_runs);
-            day12::main(&args.part, &args.num_runs);
-            day13::main(&args.part, &args.num_runs);
-            day14::main(&args.part, &args.num_runs);
-            day15::main(&args.part, &args.num_runs);
-            day16::main(&args.part, &args.num_runs);
-            day17::main(&args.part, &args.num_runs);
-            day18::main(&args.part, &args.num_runs);
-            day19::main(&args.part, &args.num_runs);
-            day20::main(&args.part, &args.num_runs);
-            day21::main(&args.part, &args.num_runs);
-            day22::main(&args.part, &args.num_runs);
-            day23::main(&args.part, &args.num_runs);
-            day24::main(&args.part, &args.num_runs);
-            day25::main(&args.part, &args.num_runs);
+            day01::main(&args.part, &args.num_runs, input_file!(args.day));
+            day02::main(&args.part, &args.num_runs, input_file!(args.day));
+            day03::main(&args.part, &args.num_runs, input_file!(args.day));
+            day04::main(&args.part, &args.num_runs, input_file!(args.day));
+            day05::main(&args.part, &args.num_runs, input_file!(args.day));
+            day06::main(&args.part, &args.num_runs, input_file!(args.day));
+            day07::main(&args.part, &args.num_runs, input_file!(args.day));
+            day08::main(&args.part, &args.num_runs, input_file!(args.day));
+            day09::main(&args.part, &args.num_runs, input_file!(args.day));
+            day10::main(&args.part, &args.num_runs, input_file!(args.day));
+            day11::main(&args.part, &args.num_runs, input_file!(args.day));
+            day12::main(&args.part, &args.num_runs, input_file!(args.day));
+            day13::main(&args.part, &args.num_runs, input_file!(args.day));
+            day14::main(&args.part, &args.num_runs, input_file!(args.day));
+            day15::main(&args.part, &args.num_runs, input_file!(args.day));
+            day16::main(&args.part, &args.num_runs, input_file!(args.day));
+            day17::main(&args.part, &args.num_runs, input_file!(args.day));
+            day18::main(&args.part, &args.num_runs, input_file!(args.day));
+            day19::main(&args.part, &args.num_runs, input_file!(args.day));
+            day20::main(&args.part, &args.num_runs, input_file!(args.day));
+            day21::main(&args.part, &args.num_runs, input_file!(args.day));
+            day22::main(&args.part, &args.num_runs, input_file!(args.day));
+            day23::main(&args.part, &args.num_runs, input_file!(args.day));
+            day24::main(&args.part, &args.num_runs, input_file!(args.day));
+            day25::main(&args.part, &args.num_runs, input_file!(args.day));
         }
     }
 }
