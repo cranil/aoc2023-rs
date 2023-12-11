@@ -13,15 +13,14 @@ pub fn read_lines(filename: &str) -> Vec<String> {
 
 macro_rules! main {
     () => {
-        pub fn main(part: &u32, num_runs: &usize) {
+        pub fn main(part: &u32, num_runs: &usize, input_file: &str) {
             let day = std::module_path!()
                 .split("day")
                 .last()
                 .unwrap()
                 .parse::<u32>()
                 .unwrap();
-            let input_file = format!("input/day{}.txt", day);
-            let contents = get_contents(input_file.as_str());
+            let contents = get_contents(input_file);
             let time_p1 = || {
                 let (result, time) = crate::utils::time_it(|| part1(&contents), num_runs);
                 let output = format!(

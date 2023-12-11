@@ -1,7 +1,78 @@
+use std::fmt::{Display, Formatter};
+
+#[derive(Debug, Clone)]
 pub struct Grid<T> {
     pub data: Vec<T>,
     pub width: usize,
     pub height: usize,
+}
+
+impl Display for Grid<char> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut s = String::new();
+        for y in 0..self.height {
+            for x in 0..self.width {
+                s.push(*self.at(x, y).unwrap());
+            }
+            s.push('\n');
+        }
+        write!(f, "{}", s)
+    }
+}
+
+impl Display for Grid<&str> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut s = String::new();
+        for y in 0..self.height {
+            for x in 0..self.width {
+                s.push_str(*self.at(x, y).unwrap());
+            }
+            s.push('\n');
+        }
+        write!(f, "{}", s)
+    }
+}
+
+impl Display for Grid<String> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut s = String::new();
+        for y in 0..self.height {
+            for x in 0..self.width {
+                s.push_str(self.at(x, y).unwrap().as_str());
+            }
+            s.push('\n');
+        }
+        write!(f, "{}", s)
+    }
+}
+
+impl Display for Grid<i64> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut s = String::new();
+        for y in 0..self.height {
+            for x in 0..self.width {
+                s.push_str(&format!("{:^5}", *self.at(x, y).unwrap()));
+            }
+            s.push('\n');
+        }
+        write!(f, "{}", s)
+    }
+}
+
+impl Display for Grid<bool> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let mut s = String::new();
+        for y in 0..self.height {
+            for x in 0..self.width {
+                s.push_str(&format!(
+                    "{}",
+                    if *self.at(x, y).unwrap() { "#" } else { "." }
+                ));
+            }
+            s.push('\n');
+        }
+        write!(f, "{}", s)
+    }
 }
 
 #[allow(dead_code)]
@@ -84,4 +155,70 @@ impl<T: Default + Clone> UpperTriangularGrid<T> {
         let index = x * self.size - x * (x + 1) / 2 + y;
         self.data[index] = value;
     }
+}
+
+pub fn gcd(a: i64, b: i64) -> i64 {
+    let mut h = std::cmp::max(a, b);
+    let mut l = std::cmp::min(a, b);
+    if l == 0 {
+        return h;
+    }
+    while l != 0 {
+        let temp = l;
+        l = h % l;
+        h = temp;
+    }
+    return h;
+}
+
+pub fn egcd(a: i64, b: i64) -> (i64, i64, i64) {
+    let (mut r0, mut r1) = (a, b);
+    let (mut s0, mut s1) = (1, 0);
+    let (mut t0, mut t1) = (0, 1);
+
+    while r1 != 0 {
+        let q = r0 / r1;
+        let r2 = r0 - q * r1;
+        let s2 = s0 - q * s1;
+        let t2 = t0 - q * t1;
+        r0 = r1;
+        r1 = r2;
+        s0 = s1;
+        s1 = s2;
+        t0 = t1;
+        t1 = t2;
+    }
+    return (r0, s0, t0);
+}
+
+pub fn lcm(a: i64, b: i64) -> i64 {
+    return a * b / gcd(a, b);
+}
+
+pub fn are_coprime(a: &[i64]) -> bool {
+    for i in 0..a.len() {
+        for j in i + 1..a.len() {
+            if gcd(a[i], a[j]) != 1 {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+pub fn mod_inv(a: i64, m: i64) -> i64 {
+    let (g, u, v) = egcd(a, m);
+    assert!(g == 1);
+    return (u % m + m) % m;
+}
+
+pub fn crt(a: &[i64], n: &[i64]) -> i64 {
+    assert!(are_coprime(n));
+    let prod = n.iter().product::<i64>();
+    let mut sum = 0;
+    for (&a_i, &n_i) in a.iter().zip(n.iter()) {
+        let p = prod / n_i;
+        sum += a_i * mod_inv(p, n_i) * p;
+    }
+    return sum % prod;
 }
