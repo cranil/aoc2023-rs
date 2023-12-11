@@ -1,7 +1,7 @@
 use std::collections::{HashMap, VecDeque};
 
 use crate::{
-    algos::Grid,
+    grid::Grid,
     utils::{main, test},
 };
 
@@ -35,6 +35,7 @@ fn cmap(c: &char) -> char {
     return p;
 }
 
+#[allow(dead_code)]
 fn pretty_print_cycle(
     grid: &Grid<char>,
     cycle: &Vec<(usize, usize)>,
@@ -71,6 +72,7 @@ fn pretty_print_cycle(
 fn find_cycle(grid: &Grid<char>, start: &(usize, usize)) -> Vec<Vec<(usize, usize)>> {
     let mut connections_h = HashMap::new();
     let mut connections_v = HashMap::new();
+
     connections_h.insert('L', vec!['S', '7', 'J', '-']);
     connections_h.insert('F', vec!['S', '7', 'J', '-']);
     connections_h.insert('7', vec!['S', 'L', 'F', '-']);
@@ -110,6 +112,7 @@ fn find_cycle(grid: &Grid<char>, start: &(usize, usize)) -> Vec<Vec<(usize, usiz
                 continue;
             }
             visited.set(x, y, true);
+
             let c = grid.at(x, y).unwrap();
             match c {
                 'S' => {
@@ -271,7 +274,9 @@ fn is_neighbor(p0: (usize, usize), p1: (usize, usize)) -> bool {
 fn find_interior_points(grid: &Grid<char>, cycle: &Vec<(usize, usize)>) -> Vec<(usize, usize)> {
     let mut interior_points = Vec::new();
     for y in 0..grid.height {
-        let cycle_y = cycle.iter().filter(|(_, yp)| y == *yp).collect::<Vec<_>>();
+        let mut cycle_y = cycle.iter().filter(|(_, yp)| y == *yp).collect::<Vec<_>>();
+        cycle_y.sort_by(|a, b| a.0.cmp(&b.0));
+
         for x in 0..grid.width {
             let mut count0 = 0;
 
@@ -350,11 +355,12 @@ fn part2(grid: &(Grid<char>, (usize, usize))) -> i64 {
     return interior_points.len() as i64;
 }
 
-#[cfg(test)]
-mod consts {
-    pub const PART1_INPUTS: [(&str, i64); 1] = [("test_inputs/day10/test01.txt", 8)];
-    pub const PART2_INPUTS: [(&str, i64); 1] = [("test_inputs/day10/test02.txt", 8)];
-}
-
-test!();
+test!(
+    part1 {
+        "test_inputs/day10/test01.txt" => 8
+    },
+    part2 {
+        "test_inputs/day10/test02.txt" => 8
+    }
+);
 main!();

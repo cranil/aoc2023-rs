@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::algos::Grid;
+use crate::grid::Grid;
 use crate::utils::{main, test};
 
 fn get_contents(filename: &str) -> Grid<char> {
@@ -164,11 +164,12 @@ fn part2(grid: &Grid<char>) -> i32 {
     return sum;
 }
 
-#[cfg(test)]
-mod consts {
-    pub const PART1_INPUTS: [(&str, i32); 1] = [("test_inputs/day03/test01.txt", 4361)];
-    pub const PART2_INPUTS: [(&str, i32); 1] = [("test_inputs/day03/test01.txt", 467835)];
-}
-
-test!();
+test!(
+    part1 {
+        "test_inputs/day03/test01.txt" => 4361
+    },
+    part2 {
+        "test_inputs/day03/test01.txt" => 467835
+    }
+);
 main!();

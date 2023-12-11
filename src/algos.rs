@@ -1,162 +1,3 @@
-use std::fmt::{Display, Formatter};
-
-#[derive(Debug, Clone)]
-pub struct Grid<T> {
-    pub data: Vec<T>,
-    pub width: usize,
-    pub height: usize,
-}
-
-impl Display for Grid<char> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut s = String::new();
-        for y in 0..self.height {
-            for x in 0..self.width {
-                s.push(*self.at(x, y).unwrap());
-            }
-            s.push('\n');
-        }
-        write!(f, "{}", s)
-    }
-}
-
-impl Display for Grid<&str> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut s = String::new();
-        for y in 0..self.height {
-            for x in 0..self.width {
-                s.push_str(*self.at(x, y).unwrap());
-            }
-            s.push('\n');
-        }
-        write!(f, "{}", s)
-    }
-}
-
-impl Display for Grid<String> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut s = String::new();
-        for y in 0..self.height {
-            for x in 0..self.width {
-                s.push_str(self.at(x, y).unwrap().as_str());
-            }
-            s.push('\n');
-        }
-        write!(f, "{}", s)
-    }
-}
-
-impl Display for Grid<i64> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut s = String::new();
-        for y in 0..self.height {
-            for x in 0..self.width {
-                s.push_str(&format!("{:^5}", *self.at(x, y).unwrap()));
-            }
-            s.push('\n');
-        }
-        write!(f, "{}", s)
-    }
-}
-
-impl Display for Grid<bool> {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let mut s = String::new();
-        for y in 0..self.height {
-            for x in 0..self.width {
-                s.push_str(&format!(
-                    "{}",
-                    if *self.at(x, y).unwrap() { "#" } else { "." }
-                ));
-            }
-            s.push('\n');
-        }
-        write!(f, "{}", s)
-    }
-}
-
-#[allow(dead_code)]
-impl<T: Default + Clone> Grid<T> {
-    pub fn new(width: usize, height: usize) -> Self {
-        let data = vec![<T as Default>::default(); width * height];
-        return Self {
-            data,
-            width,
-            height,
-        };
-    }
-
-    pub fn at(&self, x: usize, y: usize) -> Option<&T> {
-        if x >= self.width || y >= self.height {
-            return None;
-        }
-        return Some(&self.data[y * self.width + x]);
-    }
-
-    pub fn set(&mut self, x: usize, y: usize, value: T) {
-        if x >= self.width || y >= self.height {
-            return;
-        }
-        self.data[y * self.width + x] = value;
-    }
-}
-
-pub struct LowerTriangularGrid<T> {
-    pub data: Vec<T>,
-    pub size: usize,
-}
-
-impl<T: Default + Clone> LowerTriangularGrid<T> {
-    pub fn new(size: usize) -> Self {
-        let data = vec![<T as Default>::default(); size * (size + 1) / 2];
-        return Self { data, size };
-    }
-
-    pub fn at(&self, x: usize, y: usize) -> Option<&T> {
-        if x > y || y >= self.size {
-            return None;
-        }
-        let index = y * (y + 1) / 2 + x;
-        return Some(&self.data[index]);
-    }
-
-    pub fn set(&mut self, x: usize, y: usize, value: T) {
-        if x > y || y >= self.size {
-            return;
-        }
-        let index = y * (y + 1) / 2 + x;
-        self.data[index] = value;
-    }
-}
-
-pub struct UpperTriangularGrid<T> {
-    pub data: Vec<T>,
-    pub size: usize,
-}
-
-impl<T: Default + Clone> UpperTriangularGrid<T> {
-    pub fn new(size: usize) -> Self {
-        let data = vec![<T as Default>::default(); size * (size + 1) / 2];
-        return Self { data, size };
-    }
-
-    pub fn at(&self, x: usize, y: usize) -> Option<&T> {
-        if x < y || x >= self.size {
-            return None;
-        }
-        let index = x * self.size - x * (x + 1) / 2 + y;
-        return Some(&self.data[index]);
-    }
-
-    pub fn set(&mut self, x: usize, y: usize, value: T) {
-        if x < y || x >= self.size {
-            return;
-        }
-        let index = x * self.size - x * (x + 1) / 2 + y;
-        self.data[index] = value;
-    }
-}
-
 pub fn gcd(a: i64, b: i64) -> i64 {
     let mut h = std::cmp::max(a, b);
     let mut l = std::cmp::min(a, b);
@@ -207,7 +48,7 @@ pub fn are_coprime(a: &[i64]) -> bool {
 }
 
 pub fn mod_inv(a: i64, m: i64) -> i64 {
-    let (g, u, v) = egcd(a, m);
+    let (g, u, _) = egcd(a, m);
     assert!(g == 1);
     return (u % m + m) % m;
 }
@@ -221,4 +62,69 @@ pub fn crt(a: &[i64], n: &[i64]) -> i64 {
         sum += a_i * mod_inv(p, n_i) * p;
     }
     return sum % prod;
+}
+
+pub fn binary_search<T: Ord>(arr: &[T], target: &T) -> Option<usize> {
+    let mut l = 0;
+    let mut r = arr.len() - 1;
+    while l <= r {
+        let m = (l + r) / 2;
+        if arr[m] == *target {
+            return Some(m);
+        } else if arr[m] < *target {
+            l = m + 1;
+        } else {
+            r = m - 1;
+        }
+    }
+    return None;
+}
+
+pub fn binary_search_by<T, F>(arr: &[T], target: &T, f: F) -> Option<usize>
+where
+    F: Fn(&T, &T) -> std::cmp::Ordering,
+{
+    let mut l = 0;
+    let mut r = arr.len() - 1;
+    while l <= r {
+        let m = (l + r) / 2;
+        match f(&arr[m], target) {
+            std::cmp::Ordering::Equal => return Some(m),
+            std::cmp::Ordering::Less => l = m + 1,
+            std::cmp::Ordering::Greater => r = m - 1,
+        }
+    }
+    return None;
+}
+
+pub fn smallest_greater_than<T: Ord>(arr: &[T], target: &T) -> usize {
+    let mut l = 0;
+    let mut r = arr.len() - 1;
+    while l <= r {
+        let m = (l + r) / 2;
+        if arr[m] == *target {
+            return m + 1;
+        } else if arr[m] < *target {
+            l = m + 1;
+        } else {
+            r = m - 1;
+        }
+    }
+    return l;
+}
+
+pub fn largest_less_than<T: Ord>(arr: &[T], target: &T) -> usize {
+    let mut l = 0;
+    let mut r = arr.len() - 1;
+    while l <= r {
+        let m = (l + r) / 2;
+        if arr[m] == *target {
+            return m - 1;
+        } else if arr[m] < *target {
+            l = m + 1;
+        } else {
+            r = m - 1;
+        }
+    }
+    return r;
 }

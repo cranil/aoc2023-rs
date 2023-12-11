@@ -42,11 +42,12 @@ fn part2(_input: &Vec<Vec<i64>>) -> i64 {
     return sum;
 }
 
-#[cfg(test)]
-mod consts {
-    pub const PART1_INPUTS: [(&str, i64); 1] = [("test_inputs/day09/test01.txt", 114)];
-    pub const PART2_INPUTS: [(&str, i64); 1] = [("test_inputs/day09/test01.txt", 2)];
-}
-
-test!();
+test!(
+    part1 {
+        "test_inputs/day09/test01.txt" => 114
+    },
+    part2 {
+        "test_inputs/day09/test01.txt" => 2
+    }
+);
 main!();

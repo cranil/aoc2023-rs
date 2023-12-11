@@ -101,6 +101,18 @@ fn apply(map: &Vec<(i64, i64, i64)>, val: i64) -> i64 {
     return val;
 }
 
+fn print(map: &Vec<(i64, i64, i64)>) {
+    let mut map = map.clone();
+    map.sort_by(|a, b| a.1.cmp(&b.1));
+    let mut prev = map[0].1 + map[0].2;
+    for (_, src, len) in map.iter().skip(1) {
+        if *src != prev {
+            println!("{} {}", src, prev);
+        }
+        prev = *src + len;
+    }
+}
+
 fn part1(
     input: &(
         Vec<i64>,
@@ -123,6 +135,7 @@ fn part1(
         temperature_to_humidity_map,
         humidity_to_location_map,
     ) = input;
+    print(seed_to_soil_map);
     let soils = seeds.iter().map(|seed| apply(seed_to_soil_map, *seed));
     let fertilizers = soils.map(|soil| apply(soil_to_fertilizer_map, soil));
     let waters = fertilizers.map(|fertilizer| apply(fertilizer_to_water_map, fertilizer));

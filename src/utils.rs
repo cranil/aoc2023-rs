@@ -74,6 +74,33 @@ macro_rules! test {
             }
         }
     };
+    (part1{
+        $($input_file1:expr => $expected1:expr),+
+    },
+    part2{
+        $($input_file2:expr => $expected2:expr),+
+    }) => {
+        #[cfg(test)]
+        mod tests {
+            use super::*;
+
+            #[test]
+            fn part1() {
+                $(
+                    let inputs = get_contents($input_file1);
+                    assert_eq!((super::part1(&inputs)), $expected1);
+                )+
+            }
+
+            #[test]
+            fn part2() {
+                $(
+                    let inputs = get_contents($input_file2);
+                    assert_eq!((super::part2(&inputs)), $expected2);
+                )+
+            }
+        }
+    };
 }
 
 pub fn time_it<T: Default, F: Fn() -> T>(f: F, num_runs: &usize) -> (T, f64) {

@@ -1,5 +1,5 @@
 use crate::{
-    algos::Grid,
+    grid::Grid,
     utils::{main, test},
 };
 
@@ -23,8 +23,10 @@ fn solve(grid: &Grid<char>, ratio: i64) -> i64 {
             }
         }
     }
+
     let mut empty_x = Vec::new();
     let mut empty_y = Vec::new();
+
     for x in 0..grid.width {
         let mut p = false;
         for y in 0..grid.height {
@@ -36,6 +38,7 @@ fn solve(grid: &Grid<char>, ratio: i64) -> i64 {
             empty_x.push(x);
         }
     }
+
     for y in 0..grid.height {
         let mut p = false;
         for x in 0..grid.width {
@@ -47,6 +50,7 @@ fn solve(grid: &Grid<char>, ratio: i64) -> i64 {
             empty_y.push(y);
         }
     }
+
     let mut sum = 0;
     for i in 0..galaxies.len() {
         for j in 0..i {
@@ -73,6 +77,7 @@ fn solve(grid: &Grid<char>, ratio: i64) -> i64 {
             sum += dist;
         }
     }
+
     return sum;
 }
 
@@ -84,11 +89,12 @@ fn part2(grid: &Grid<char>) -> i64 {
     return solve(grid, 1_000_000);
 }
 
-#[cfg(test)]
-mod consts {
-    pub const PART1_INPUTS: [(&str, i64); 0] = [];
-    pub const PART2_INPUTS: [(&str, i64); 0] = [];
-}
-
-test!();
+test!(
+    part1 {
+        "test_inputs/day11/test01.txt" => 374i64
+    },
+    part2 {
+        "test_inputs/day11/test01.txt" => 82000210i64
+    }
+);
 main!();

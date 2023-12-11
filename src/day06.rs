@@ -53,11 +53,13 @@ fn part2(input: &(Vec<i32>, Vec<i32>)) -> i64 {
     let distance = actual_distance.parse::<i64>().unwrap();
     return calculate_num_ways(total_time, distance);
 }
-#[cfg(test)]
-mod consts {
-    pub const PART1_INPUTS: [(&str, i64); 1] = [("test_inputs/day06/test01.txt", 288)];
-    pub const PART2_INPUTS: [(&str, i64); 1] = [("test_inputs/day06/test01.txt", 71503)];
-}
 
-test!();
+test!(
+    part1 {
+        "test_inputs/day06/test01.txt" => 288
+    },
+    part2 {
+        "test_inputs/day06/test01.txt" => 71503
+    }
+);
 main!();

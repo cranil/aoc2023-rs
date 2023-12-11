@@ -83,11 +83,12 @@ fn part2(lines: &Vec<String>) -> i32 {
     return sum;
 }
 
-#[cfg(test)]
-mod consts {
-    pub const PART1_INPUTS: [(&str, i32); 1] = [("test_inputs/day02/test01.txt", 8)];
-    pub const PART2_INPUTS: [(&str, i32); 1] = [("test_inputs/day02/test01.txt", 2286)];
-}
-
-test!();
+test!(
+    part1 {
+        "test_inputs/day02/test01.txt" => 8
+    },
+    part2 {
+        "test_inputs/day02/test01.txt" => 2286
+    }
+);
 main!();

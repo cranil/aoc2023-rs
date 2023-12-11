@@ -260,11 +260,13 @@ fn part2(hand_bid_pairs: &Vec<(Hand, i32)>) -> i32 {
         .map(|(i, x)| (i + 1) as i32 * x.1)
         .sum();
 }
-#[cfg(test)]
-mod consts {
-    pub const PART1_INPUTS: [(&str, i32); 1] = [("test_inputs/day07/test01.txt", 6440)];
-    pub const PART2_INPUTS: [(&str, i32); 1] = [("test_inputs/day07/test01.txt", 5905)];
-}
 
-test!();
+test!(
+    part1 {
+        "test_inputs/day07/test01.txt" => 6440
+    },
+    part2 {
+        "test_inputs/day07/test01.txt" => 5905
+    }
+);
 main!();

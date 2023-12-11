@@ -90,14 +90,13 @@ fn part2(input: &(String, HashMap<String, (String, String)>)) -> i64 {
     return count;
 }
 
-#[cfg(test)]
-mod consts {
-    pub const PART1_INPUTS: [(&str, i64); 2] = [
-        ("test_inputs/day08/test01.txt", 2),
-        ("test_inputs/day08/test02.txt", 6),
-    ];
-    pub const PART2_INPUTS: [(&str, i64); 1] = [("test_inputs/day08/test03.txt", 6)];
-}
-
-test!();
+test!(
+    part1 {
+        "test_inputs/day08/test01.txt" => 2,
+        "test_inputs/day08/test02.txt" => 6
+    },
+    part2 {
+        "test_inputs/day08/test03.txt" => 6
+    }
+);
 main!();
