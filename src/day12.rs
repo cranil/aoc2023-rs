@@ -20,6 +20,7 @@ fn get_contents(filename: &str) -> Vec<(String, Vec<i8>)> {
         .collect::<Vec<_>>();
 }
 
+// flag: previous character was a '#'
 fn solve(
     config: &str,
     ii: usize,
@@ -34,12 +35,20 @@ fn solve(
             return 1;
         }
     }
+    let mut mem_or_solve = |i: usize, grouping: &[i8], flag: bool| {
+        if let Some(n_solns) = dp.get(&(i, grouping.to_vec(), flag)) {
+            *n_solns
+        } else {
+            let n_solns = solve(config, i, grouping, flag, dp);
+            dp.insert((i, grouping.to_vec(), flag), n_solns);
+            n_solns
+        }
+    };
 
     let mut j = 0;
     let mut grouping = grouping.to_vec();
     let mut p = flag;
-    let mut i = ii;
-    for c in config.chars().skip(ii) {
+    for (i, c) in config.chars().enumerate().skip(ii) {
         if c == '#' {
             if j >= grouping.len() {
                 return 0;
@@ -64,41 +73,24 @@ fn solve(
                 if grouping[j] > 0 {
                     0
                 } else {
-                    if let Some(n_solns) = dp.get(&(i + 1, grouping[j + 1..].to_vec(), false)) {
-                        *n_solns
-                    } else {
-                        let n_solns = solve(&config, i + 1, &grouping[j + 1..], false, dp);
-                        dp.insert((i + 1, grouping[j + 1..].to_vec(), false), n_solns);
-                        n_solns
-                    }
+                    mem_or_solve(i + 1, &grouping[j + 1..], false)
                 }
             } else {
-                if let Some(n_solns) = dp.get(&(i + 1, grouping[j..].to_vec(), false)) {
-                    *n_solns
-                } else {
-                    let n_solns = solve(&config, i + 1, &grouping[j..], false, dp);
-                    dp.insert((i + 1, grouping[j..].to_vec(), false), n_solns);
-                    n_solns
-                }
+                mem_or_solve(i + 1, &grouping[j..], false)
             };
+
             if j >= grouping.len() {
                 return total0;
-            }
-            grouping[j] -= 1;
-            let total1 = if grouping[j] < 0 {
-                0
             } else {
-                if let Some(n_solns) = dp.get(&(i + 1, grouping[j..].to_vec(), true)) {
-                    *n_solns
+                grouping[j] -= 1;
+                let total1 = if grouping[j] < 0 {
+                    0
                 } else {
-                    let n_solns = solve(&config, i + 1, &grouping[j..], true, dp);
-                    dp.insert((i + 1, grouping[j..].to_vec(), true), n_solns);
-                    n_solns
-                }
-            };
-            return total0 + total1;
+                    mem_or_solve(i + 1, &grouping[j..], true)
+                };
+                return total0 + total1;
+            }
         }
-        i += 1;
     }
     if grouping.iter().all(|&x| x == 0) {
         return 1;
@@ -128,11 +120,12 @@ fn part2(problem: &Vec<(String, Vec<i8>)>) -> i64 {
     return total;
 }
 
-#[cfg(test)]
-mod consts {
-    pub const PART1_INPUTS: [(&str, i64); 0] = [];
-    pub const PART2_INPUTS: [(&str, i64); 0] = [];
-}
-
-test!();
+test!(
+    part1 {
+        "test_inputs/day12/test01.txt" => 21
+    },
+    part2 {
+        "test_inputs/day12/test01.txt" => 525152
+    }
+);
 main!();
