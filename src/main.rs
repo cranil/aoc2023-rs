@@ -26,6 +26,7 @@ pub mod day25;
 
 pub mod algos;
 pub mod grid;
+pub mod grid3d;
 pub mod utils;
 
 use clap::Parser;
@@ -46,16 +47,28 @@ struct Args {
     input_file: Option<String>,
 }
 
+fn default_input_file(day: u32) -> String {
+    let filename = format!("input/day{:02}/input.txt", day);
+    let filepath = std::path::Path::new(&filename);
+    if filepath.exists() {
+        return filename;
+    } else {
+        let contents = utils::download_input(&day);
+        std::fs::write(&filename, &contents).unwrap();
+        return filename;
+    }
+}
+
 macro_rules! input_file {
     ($day:expr, $file:expr) => {
         match $file {
             Some(f) => f.clone(),
-            None => format!("input/day{:02}/input.txt", $day),
+            None => default_input_file($day),
         }
         .as_str()
     };
     ($day:expr) => {
-        format!("input/day{:02}/input.txt", $day).as_str()
+        default_input_file($day).as_str()
     };
 }
 
@@ -63,9 +76,8 @@ fn main() {
     let args = Args::parse();
     let header = format!(
         "
-+----+--------+----------------+------------+
-|{:^4}|{:^8}|{:^16}|{:^12}|
-+----+--------+----------------+------------+",
+┌────┬────────┬────────────────────────────────┬────────────┐
+│{:^4}│{:^8}│{:^32}│{:^12}│",
         "Day", "Part", "Result", "Time (us)"
     );
     println!("{}", header);
@@ -196,31 +208,33 @@ fn main() {
             input_file!(args.day, args.input_file),
         ),
         _ => {
-            day01::main(&args.part, &args.num_runs, input_file!(args.day));
-            day02::main(&args.part, &args.num_runs, input_file!(args.day));
-            day03::main(&args.part, &args.num_runs, input_file!(args.day));
-            day04::main(&args.part, &args.num_runs, input_file!(args.day));
-            day05::main(&args.part, &args.num_runs, input_file!(args.day));
-            day06::main(&args.part, &args.num_runs, input_file!(args.day));
-            day07::main(&args.part, &args.num_runs, input_file!(args.day));
-            day08::main(&args.part, &args.num_runs, input_file!(args.day));
-            day09::main(&args.part, &args.num_runs, input_file!(args.day));
-            day10::main(&args.part, &args.num_runs, input_file!(args.day));
-            day11::main(&args.part, &args.num_runs, input_file!(args.day));
-            day12::main(&args.part, &args.num_runs, input_file!(args.day));
-            day13::main(&args.part, &args.num_runs, input_file!(args.day));
-            day14::main(&args.part, &args.num_runs, input_file!(args.day));
-            day15::main(&args.part, &args.num_runs, input_file!(args.day));
-            day16::main(&args.part, &args.num_runs, input_file!(args.day));
-            day17::main(&args.part, &args.num_runs, input_file!(args.day));
-            day18::main(&args.part, &args.num_runs, input_file!(args.day));
-            day19::main(&args.part, &args.num_runs, input_file!(args.day));
-            day20::main(&args.part, &args.num_runs, input_file!(args.day));
-            day21::main(&args.part, &args.num_runs, input_file!(args.day));
-            day22::main(&args.part, &args.num_runs, input_file!(args.day));
-            day23::main(&args.part, &args.num_runs, input_file!(args.day));
-            day24::main(&args.part, &args.num_runs, input_file!(args.day));
-            day25::main(&args.part, &args.num_runs, input_file!(args.day));
+            day01::main(&args.part, &args.num_runs, input_file!(01));
+            day02::main(&args.part, &args.num_runs, input_file!(02));
+            day03::main(&args.part, &args.num_runs, input_file!(03));
+            day04::main(&args.part, &args.num_runs, input_file!(04));
+            day05::main(&args.part, &args.num_runs, input_file!(05));
+            day06::main(&args.part, &args.num_runs, input_file!(06));
+            day07::main(&args.part, &args.num_runs, input_file!(07));
+            day08::main(&args.part, &args.num_runs, input_file!(08));
+            day09::main(&args.part, &args.num_runs, input_file!(09));
+            day10::main(&args.part, &args.num_runs, input_file!(10));
+            day11::main(&args.part, &args.num_runs, input_file!(11));
+            day12::main(&args.part, &args.num_runs, input_file!(12));
+            day13::main(&args.part, &args.num_runs, input_file!(13));
+            day14::main(&args.part, &args.num_runs, input_file!(14));
+            day15::main(&args.part, &args.num_runs, input_file!(15));
+            day16::main(&args.part, &args.num_runs, input_file!(16));
+            day17::main(&args.part, &args.num_runs, input_file!(17));
+            day18::main(&args.part, &args.num_runs, input_file!(18));
+            day19::main(&args.part, &args.num_runs, input_file!(19));
+            day20::main(&args.part, &args.num_runs, input_file!(20));
+            day21::main(&args.part, &args.num_runs, input_file!(21));
+            day22::main(&args.part, &args.num_runs, input_file!(22));
+            day23::main(&args.part, &args.num_runs, input_file!(23));
+            day24::main(&args.part, &args.num_runs, input_file!(24));
+            day25::main(&args.part, &args.num_runs, input_file!(25));
         }
     }
+    let footer = format!("└────┴────────┴────────────────────────────────┴────────────┘");
+    println!("{}", footer);
 }

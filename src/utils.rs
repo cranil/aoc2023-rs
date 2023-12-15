@@ -1,3 +1,6 @@
+use reqwest::StatusCode;
+
+use std::collections::HashMap;
 use std::fs::read_to_string;
 
 pub fn read_all(filename: &str) -> String {
@@ -24,8 +27,8 @@ macro_rules! main {
             let time_p1 = || {
                 let (result, time) = crate::utils::time_it(|| part1(&contents), num_runs);
                 let output = format!(
-                    "|{:^4}|{:^8}|{:^16}|{:^12}|
-+----+--------+----------------+------------+",
+                    "├────┼────────┼────────────────────────────────┼────────────┤
+│{:^4}│{:^8}│{:^32}│{:^12}│",
                     day, 1, result, time
                 );
                 println!("{}", output);
@@ -33,8 +36,8 @@ macro_rules! main {
             let time_p2 = || {
                 let (result, time) = crate::utils::time_it(|| part2(&contents), num_runs);
                 let output = format!(
-                    "|{:^4}|{:^8}|{:^16}|{:^12}|
-+----+--------+----------------+------------+",
+                    "├────┼────────┼────────────────────────────────┼────────────┤
+│{:^4}│{:^8}│{:^32}│{:^12}│",
                     day, 2, result, time
                 );
                 println!("{}", output);
@@ -103,6 +106,9 @@ macro_rules! test {
     };
 }
 
+pub(crate) use main;
+pub(crate) use test;
+
 pub fn time_it<T: Default, F: Fn() -> T>(f: F, num_runs: &usize) -> (T, f64) {
     let start = std::time::Instant::now();
     let mut result = T::default();
@@ -116,5 +122,54 @@ pub fn time_it<T: Default, F: Fn() -> T>(f: F, num_runs: &usize) -> (T, f64) {
     );
 }
 
-pub(crate) use main;
-pub(crate) use test;
+pub fn download_input(day: &u32) -> String {
+    let url = format!("https://adventofcode.com/2023/day/{}/input", day);
+    let cookie = read_all("cookies/session");
+    let cookie_map = cookie
+        .split_whitespace()
+        .map(|token| {
+            let mut tokens = token.split('=');
+            (
+                tokens.next().unwrap().to_string(),
+                tokens.next().unwrap().to_string(),
+            )
+        })
+        .collect::<HashMap<_, _>>();
+
+    let client = reqwest::blocking::Client::new();
+    let body = match client
+        .get(url)
+        .header("Cookie", format!("session={}", cookie_map["session"]))
+        .send()
+    {
+        Ok(res) => {
+            if res.status() == StatusCode::OK {
+                res.text().unwrap()
+            } else {
+                panic!("Failed to download input for day {}", day);
+            }
+        }
+        Err(e) => {
+            panic!("Failed to download input for day {}", e);
+        }
+    };
+
+    //    let filename = format!("inputs/day{:02}/input.txt", day);
+    //    std::fs::write(filename, body).unwrap();
+    return body;
+}
+
+#[cfg(test)]
+mod download_tests {
+    use super::*;
+
+    #[test]
+    fn download() {
+        assert!(
+            download_input(&6).as_str()
+                == "Time:        44     82     69     81
+Distance:   202   1076   1138   1458
+",
+        );
+    }
+}
