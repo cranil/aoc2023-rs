@@ -1,7 +1,4 @@
-use std::{
-    cmp::max,
-    collections::{HashMap, HashSet},
-};
+use std::{cmp::max, collections::VecDeque};
 
 use crate::{
     grid::Grid,
@@ -25,9 +22,57 @@ struct Ray {
     dir: (i64, i64),
 }
 
-fn step(rays: Vec<Ray>, grid: &Grid<char>, ray_set: &HashSet<Ray>) -> Vec<Ray> {
-    let mut new_rays = Vec::new();
-    for ray in rays.iter() {
+struct Visited {
+    grid: Grid<u8>,
+}
+
+impl Visited {
+    fn new(width: usize, height: usize) -> Visited {
+        return Visited {
+            grid: Grid::new(width, height),
+        };
+    }
+
+    fn contains(&self, ray: &Ray) -> bool {
+        let (x, y) = ray.point;
+        let (dx, dy) = ray.dir;
+        let val = self.grid.at(x as usize, y as usize).unwrap();
+        let cell_visited = val & 0b0000_0001 != 0;
+        let dir_visited = match (dx, dy) {
+            (0, 1) => val & 0b0000_0010 != 0,
+            (0, -1) => val & 0b0000_0100 != 0,
+            (1, 0) => val & 0b0000_1000 != 0,
+            (-1, 0) => val & 0b0001_0000 != 0,
+            _ => panic!("Unknown direction {:?}", ray),
+        };
+        return cell_visited && dir_visited;
+    }
+
+    fn visit(&mut self, ray: &Ray) {
+        let (x, y) = ray.point;
+        let (dx, dy) = ray.dir;
+        if x < 0 || x >= self.grid.width as i64 || y < 0 || y >= self.grid.height as i64 {
+            return;
+        }
+        let val = 0b0000_0001
+            | match (dx, dy) {
+                (0, 1) => 0b0000_0010,
+                (0, -1) => 0b0000_0100,
+                (1, 0) => 0b0000_1000,
+                (-1, 0) => 0b0001_0000,
+                _ => panic!("Unknown direction {:?}", ray),
+            };
+        self.grid.set(x as usize, y as usize, val);
+    }
+}
+
+fn energize_bfs(ray: &Ray, grid: &Grid<char>) -> Grid<u8> {
+    let mut visited_ray = Visited::new(grid.width, grid.height);
+
+    let mut queue = VecDeque::new();
+    queue.push_back(ray.clone());
+    while !queue.is_empty() {
+        let ray = queue.pop_front().unwrap();
         let (x, y) = ray.point;
         let (dx, dy) = ray.dir;
         let (nx, ny) = (x + dx, y + dy);
@@ -41,8 +86,9 @@ fn step(rays: Vec<Ray>, grid: &Grid<char>, ray_set: &HashSet<Ray>) -> Vec<Ray> {
                     point: (nx, ny),
                     dir: (dx, dy),
                 };
-                if !ray_set.contains(&new_ray) {
-                    new_rays.push(new_ray);
+                if !visited_ray.contains(&new_ray) {
+                    queue.push_back(new_ray.clone());
+                    visited_ray.visit(&new_ray);
                 }
             }
             '/' => {
@@ -50,8 +96,9 @@ fn step(rays: Vec<Ray>, grid: &Grid<char>, ray_set: &HashSet<Ray>) -> Vec<Ray> {
                     point: (nx, ny),
                     dir: (-dy, -dx),
                 };
-                if !ray_set.contains(&new_ray) {
-                    new_rays.push(new_ray);
+                if !visited_ray.contains(&new_ray) {
+                    queue.push_back(new_ray.clone());
+                    visited_ray.visit(&new_ray);
                 }
             }
             '\\' => {
@@ -59,30 +106,37 @@ fn step(rays: Vec<Ray>, grid: &Grid<char>, ray_set: &HashSet<Ray>) -> Vec<Ray> {
                     point: (nx, ny),
                     dir: (dy, dx),
                 };
-                if !ray_set.contains(&new_ray) {
-                    new_rays.push(new_ray);
+                if !visited_ray.contains(&new_ray) {
+                    queue.push_back(new_ray.clone());
+                    visited_ray.visit(&new_ray);
                 }
             }
             '|' => {
                 if dx == 0 {
-                    new_rays.push(Ray {
+                    let new_ray = Ray {
                         point: (nx, ny),
                         dir: (dx, dy),
-                    });
+                    };
+                    if !visited_ray.contains(&new_ray) {
+                        queue.push_back(new_ray.clone());
+                        visited_ray.visit(&new_ray);
+                    }
                 } else {
                     let new_ray = Ray {
                         point: (nx, ny),
                         dir: (0, 1),
                     };
-                    if !ray_set.contains(&new_ray) {
-                        new_rays.push(new_ray);
+                    if !visited_ray.contains(&new_ray) {
+                        queue.push_back(new_ray.clone());
+                        visited_ray.visit(&new_ray);
                     }
                     let new_ray = Ray {
                         point: (nx, ny),
                         dir: (0, -1),
                     };
-                    if !ray_set.contains(&new_ray) {
-                        new_rays.push(new_ray);
+                    if !visited_ray.contains(&new_ray) {
+                        queue.push_back(new_ray.clone());
+                        visited_ray.visit(&new_ray);
                     }
                 }
             }
@@ -92,101 +146,41 @@ fn step(rays: Vec<Ray>, grid: &Grid<char>, ray_set: &HashSet<Ray>) -> Vec<Ray> {
                         point: (nx, ny),
                         dir: (dx, dy),
                     };
-                    if !ray_set.contains(&new_ray) {
-                        new_rays.push(new_ray);
+                    if !visited_ray.contains(&new_ray) {
+                        queue.push_back(new_ray.clone());
+                        visited_ray.visit(&new_ray);
                     }
                 } else {
                     let new_ray = Ray {
                         point: (nx, ny),
                         dir: (1, 0),
                     };
-                    if !ray_set.contains(&new_ray) {
-                        new_rays.push(new_ray);
+                    if !visited_ray.contains(&new_ray) {
+                        queue.push_back(new_ray.clone());
+                        visited_ray.visit(&new_ray);
                     }
+
                     let new_ray = Ray {
                         point: (nx, ny),
                         dir: (-1, 0),
                     };
-                    if !ray_set.contains(&new_ray) {
-                        new_rays.push(new_ray);
+                    if !visited_ray.contains(&new_ray) {
+                        queue.push_back(new_ray.clone());
+                        visited_ray.visit(&new_ray);
                     }
                 }
             }
             _ => panic!("Unknown character {}", c),
         }
     }
-    return new_rays;
+    return visited_ray.grid;
 }
 
-fn part1(grid: &Grid<char>) -> i64 {
-    let mut dp = HashMap::new();
-    let rays = vec![Ray {
-        point: (-1, 0),
-        dir: (1, 0),
-    }];
-    let light_grid = energize(&rays, grid, &mut dp);
-    return count_energized(&light_grid);
-}
-
-fn union(grid1: &Grid<bool>, grid2: &Grid<bool>) -> Grid<bool> {
-    let mut grid = Grid::new(grid1.width, grid1.height);
-    for y in 0..grid.height {
-        for x in 0..grid.width {
-            grid.set(x, y, *grid1.at(x, y).unwrap() || *grid2.at(x, y).unwrap());
-        }
-    }
-    return grid;
-}
-
-fn energize_ray(ray: &Ray, grid: &Grid<char>) -> Grid<bool> {
-    let mut energized = Grid::new(grid.width, grid.height);
-    let mut rays = vec![ray.clone()];
-    if ray.point.0 >= 0
-        && ray.point.0 < grid.width as i64
-        && ray.point.1 >= 0
-        && ray.point.1 < grid.height as i64
-    {
-        energized.set(ray.point.0 as usize, ray.point.1 as usize, true);
-    }
-
-    let mut light_trail = HashSet::new();
-
-    while !rays.is_empty() {
-        rays = step(rays, grid, &light_trail);
-        for ray in rays.iter() {
-            light_trail.insert(ray.clone());
-            if ray.point.0 < 0
-                || ray.point.0 >= grid.width as i64
-                || ray.point.1 < 0
-                || ray.point.1 >= grid.height as i64
-            {
-                continue;
-            }
-            energized.set(ray.point.0 as usize, ray.point.1 as usize, true);
-        }
-    }
-    return energized;
-}
-
-fn energize(rays: &Vec<Ray>, grid: &Grid<char>, dp: &mut HashMap<Ray, Grid<bool>>) -> Grid<bool> {
-    let mut energized = Grid::new(grid.width, grid.height);
-    for ray in rays.iter() {
-        if let Some(energized_ray) = dp.get(ray) {
-            energized = union(&energized, energized_ray);
-        } else {
-            let energized_ray = energize_ray(ray, grid);
-            energized = union(&energized, &energized_ray);
-            dp.insert(ray.clone(), energized_ray);
-        }
-    }
-    return energized;
-}
-
-fn count_energized(grid: &Grid<bool>) -> i64 {
+fn count_energized(grid: &Grid<u8>) -> i64 {
     let mut count = 0;
     for y in 0..grid.height {
         for x in 0..grid.width {
-            if *grid.at(x, y).unwrap() {
+            if *grid.at(x, y).unwrap() & 0b0000_0001 != 0 {
                 count += 1;
             }
         }
@@ -194,9 +188,16 @@ fn count_energized(grid: &Grid<bool>) -> i64 {
     return count;
 }
 
-fn part2(grid: &Grid<char>) -> i64 {
-    let mut dp = HashMap::new();
+fn part1(grid: &Grid<char>) -> i64 {
+    let ray = Ray {
+        point: (-1, 0),
+        dir: (1, 0),
+    };
+    let light_grid = energize_bfs(&ray, grid);
+    return count_energized(&light_grid);
+}
 
+fn part2(grid: &Grid<char>) -> i64 {
     let right_max = (0..grid.height)
         .map(|y| Ray {
             point: (-1, y as i64),
@@ -204,7 +205,7 @@ fn part2(grid: &Grid<char>) -> i64 {
         })
         .map(|ray| {
             let rays = vec![ray];
-            energize(&rays, grid, &mut dp)
+            energize_bfs(&rays[0], grid)
         })
         .map(|grid| count_energized(&grid))
         .max()
@@ -216,7 +217,7 @@ fn part2(grid: &Grid<char>) -> i64 {
         })
         .map(|ray| {
             let rays = vec![ray];
-            energize(&rays, grid, &mut dp)
+            energize_bfs(&rays[0], grid)
         })
         .map(|grid| count_energized(&grid))
         .max()
@@ -228,7 +229,7 @@ fn part2(grid: &Grid<char>) -> i64 {
         })
         .map(|ray| {
             let rays = vec![ray];
-            energize(&rays, grid, &mut dp)
+            energize_bfs(&rays[0], grid)
         })
         .map(|grid| count_energized(&grid))
         .max()
@@ -240,7 +241,7 @@ fn part2(grid: &Grid<char>) -> i64 {
         })
         .map(|ray| {
             let rays = vec![ray];
-            energize(&rays, grid, &mut dp)
+            energize_bfs(&rays[0], grid)
         })
         .map(|grid| count_energized(&grid))
         .max()
