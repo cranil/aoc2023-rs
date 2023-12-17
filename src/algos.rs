@@ -1,3 +1,7 @@
+use crate::grid;
+
+pub mod priority_queue;
+
 pub fn gcd(a: i64, b: i64) -> i64 {
     let mut h = std::cmp::max(a, b);
     let mut l = std::cmp::min(a, b);
@@ -33,7 +37,7 @@ pub fn egcd(a: i64, b: i64) -> (i64, i64, i64) {
 }
 
 pub fn lcm(a: i64, b: i64) -> i64 {
-    return a * b / gcd(a, b);
+    return a / gcd(a, b) * b;
 }
 
 pub fn are_coprime(a: &[i64]) -> bool {
@@ -127,4 +131,20 @@ pub fn largest_less_than<T: Ord>(arr: &[T], target: &T) -> usize {
         }
     }
     return r;
+}
+
+pub fn combinations(n: usize) -> grid::LowerTriangularGrid<usize> {
+    let mut pascal = grid::LowerTriangularGrid::new(n + 1);
+    for i in 0..=n {
+        for j in 0..=i {
+            if j == 0 || j == i {
+                pascal.set(i, j, 1);
+            } else {
+                let y0 = pascal.at(i - 1, j - 1).unwrap();
+                let y1 = pascal.at(i - 1, j).unwrap();
+                pascal.set(i, j, y0 + y1);
+            }
+        }
+    }
+    return pascal;
 }
