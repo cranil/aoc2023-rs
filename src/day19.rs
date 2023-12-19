@@ -364,7 +364,7 @@ fn rule_bounds(
     }
 }
 
-fn reccur(
+fn count_possibilities(
     src: &String,
     workflow_map: &HashMap<String, Workflow>,
     a_min: i64,
@@ -427,7 +427,7 @@ fn reccur(
             total += if invalid {
                 0
             } else {
-                reccur(
+                count_possibilities(
                     &rule.action,
                     workflow_map,
                     min_a,
@@ -451,7 +451,7 @@ fn part2((workflows, _): &(Vec<Workflow>, Vec<Part>)) -> i64 {
         let w = workflow.clone();
         workflow_map.insert(workflow.name.clone(), w);
     }
-    reccur(
+    count_possibilities(
         &"in".to_string(),
         &workflow_map,
         1,
