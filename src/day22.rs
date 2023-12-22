@@ -159,26 +159,19 @@ fn part2(bricks: &InputData) -> i64 {
 
     let mut affects = vec![0; bricks.len()];
     for i in 0..bricks.len() {
-        let mut affected = HashSet::new();
         let mut queue = VecDeque::new();
         queue.push_back(i);
-        affected.insert(i);
+        let mut n_supports = supported_by.iter().map(|s| s.len()).collect::<Vec<_>>();
         while let Some(brick_idx) = queue.pop_front() {
+            affects[i] += 1;
             for brick_above in supports[brick_idx].iter() {
-                let mut topples = true;
-                for supp in supported_by[*brick_above as usize - 1].iter() {
-                    if !affected.contains(&(*supp - 1)) {
-                        topples = false;
-                        break;
-                    }
-                }
-                if topples {
+                n_supports[*brick_above as usize - 1] -= 1;
+                if n_supports[*brick_above as usize - 1] == 0 {
                     queue.push_back(*brick_above - 1);
-                    affected.insert(*brick_above - 1);
                 }
             }
         }
-        affects[i] = affected.len() - 1;
+        affects[i] -= 1;
     }
     affects.iter().sum::<usize>() as i64
 }
