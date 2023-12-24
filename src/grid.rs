@@ -99,6 +99,10 @@ impl<T: Default + Clone> Grid<T> {
         }
         self.data[y * self.width + x] = value;
     }
+
+    pub fn fill(&mut self, value: T) {
+        self.data.fill(value);
+    }
 }
 
 pub struct LowerTriangularGrid<T> {
@@ -154,6 +158,10 @@ impl<T: Default + Clone> UpperTriangularGrid<T> {
         }
         let index = x * self.size - x * (x + 1) / 2 + y;
         self.data[index] = value;
+    }
+
+    pub fn fill(&mut self, value: T) {
+        self.data.fill(value);
     }
 }
 

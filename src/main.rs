@@ -26,7 +26,6 @@ pub mod day25;
 
 pub mod algos;
 pub mod grid;
-pub mod grid3d;
 pub mod utils;
 
 use clap::Parser;
